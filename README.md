@@ -1,6 +1,6 @@
 # AffectPrediction
 
-**Jin Ke, Hayoung Song, Zihan Bai, Monica D. Rosenberg & Yuan Chang Leong (2023). Dynamic Functional Connectivity Encodes Generalizable Representations of Emotional Arousal But Not Valence. bioRxiv. https://www.biorxiv.org/content/10.1101/2023.11.14.566767v1**
+**Jin Ke, Hayoung Song, Zihan Bai, Monica D. Rosenberg & Yuan Chang Leong (2023). Dynamic Functional Connectivity Encodes Generalizable Representations of Emotional Arousal But Not Valence. _bioRxiv_. https://www.biorxiv.org/content/10.1101/2023.11.14.566767v1**
 
 **FMRI datasets used in the study**  
 Sherlock dataset : http://arks.princeton.edu/ark:/88435/dsp01nz8062179 (Chen et al., 2017; Nat. Neurosci.)  
