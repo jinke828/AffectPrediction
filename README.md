@@ -4,6 +4,7 @@
 
 https://www.biorxiv.org/content/10.1101/2023.11.14.566767v1
 
+
 **FMRI datasets used in the study**          
 
 Sherlock dataset : http://arks.princeton.edu/ark:/88435/dsp01nz8062179 (Chen et al., 2017; Nat. Neurosci.)  
@@ -15,6 +16,6 @@ North by Northwest dataset: Collected by our group, access upon request -- pleas
 
 Data access open after paper being published
 
-**code**       
+**Code**       
 
 Computing dynamic functional connectivity and applying sliding window to behavioral timecourse: 
