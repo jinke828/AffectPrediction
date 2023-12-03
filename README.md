@@ -20,7 +20,7 @@ https://www.biorxiv.org/content/10.1101/2023.11.14.566767v1
 * Computing dynamic functional connectivity and applying sliding window to behavioral timecourse: 
 https://github.com/hyssong/NarrativeEngagement/tree/main/code/preprocess
 
-* Within- and across-dataset arousal prediction
+* Within- and across-dataset arousal prediction:             
 https://github.com/jinke828/AffectPrediction/tree/main/code
 
 
