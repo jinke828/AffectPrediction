@@ -12,14 +12,15 @@ https://www.biorxiv.org/content/10.1101/2023.11.14.566767v1
 * Merlin dataset: https://openneuro.org/datasets/ds001110/versions/00003 (Zadbood et al., 2017; Cereb. Cortex.)  
 * North by Northwest dataset: Collected by our group, access upon request -- please email jinke@uchicago.edu  
 
-**Behavioral data**       
+**Behavioral data, preprocessed brain data, & arousal network**       
 
-* Data access open after paper being published
+* Data open available after paper being published
 
 **Code**      
 * Computing dynamic functional connectivity and applying sliding window to behavioral timecourse: 
 https://github.com/hyssong/NarrativeEngagement/tree/main/code/preprocess
 
 * Within- and across-dataset arousal prediction
+https://github.com/jinke828/AffectPrediction/tree/main/code
 
 
