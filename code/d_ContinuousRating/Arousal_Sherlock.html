@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MCN Lab Experiment</title>
+    <script src="jspsych-6/jspsych.js"></script>
+    <script src="jspsych-6/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6/plugins/jspsych-video-keyboard-response.js"></script>
+    <script src="jspsych-6/plugins/jspsych-survey-html-form.js"></script>
+    <script src="jspsych-6/plugins/jspsych-survey-multi-select.js"></script>
+    <script src="jspsych-6/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6/plugins/ratings.js"></script>
+    <script src="jspsych-6/plugins/jspsych-video-slider-response.js"></script>
+    <script src="jspsych-6/plugins/jspsych-html-slider-response.js"></script>
+    <script src="jspsych-6/plugins/videoSlider.js"></script>
+    <script src="jspsych-6/plugins/jspsych-preload.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link href="jspsych-6/css/jspsych.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <script>
+
+/**********************************************************/
+/************** DEFINING NECESSARY VARIABLES **************/
+
+
+    var debugMode = false;
+    var show_instructions = true;
+    var limitToDesktop = true;
+    var limitToGoogle = false;
+    var forceFullscreen = true;
+    var subj_id = prompt("Please enter your ID:", "");
+    var subj_name = subj_id.toString() + "_" + Date.now();
+    var completion_code = Math.random().toString(36).slice(2);
+    var timeline = [];
+    var ratings = [];
+
+/**********************************************************/
+/**************** EXCLUDE BY BROWSER **********************/
+
+    var check = false;
+    function getBrowserInfo() {
+        var ua = navigator.userAgent,
+            tem,
+            M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+        if (/trident/i.test(M[1])) {
+            tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+            return 'IE ' + (tem[1] || '');
+        }
+        if (M[1] === 'Chrome') {
+            tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
+            if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+        }
+        M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+        if ((tem = ua.match(/version\/(\d+)/i)) != null)
+            M.splice(1, 1, tem[1]);
+        return {
+            'browser': M[0],
+            'version': M[1]
+        };
+    };
+    function mobileAndTabletCheck() {
+      (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+      return check;
+    };
+
+
+/**********************************************************/
+/****************** HELPER FUNCTIONS **********************/ 
+
+function get_viewport_size(){
+        var test = document.createElement( "div" );
+
+        test.style.cssText = "position: fixed;top: 0;left: 0;bottom: 0;right: 0;";
+        document.documentElement.insertBefore( test, document.documentElement.firstChild );
+
+        var dims = { width: test.offsetWidth, height: test.offsetHeight };
+        document.documentElement.removeChild( test );
+
+        return dims;
+    };
+
+/**********************************************************/
+/****************** DEFINE INSTRUCTIONS *******************/
+
+    // set up parameters//
+    const SLIDE_MIN = 1;
+    const SLIDE_MAX = 25;
+    const SLIDE_BIG_STEP = 5;
+    const SLIDE_START = 13;
+    const SLIDE_WIDTH = 650;
+    const SLIDE_LABELS  = ['<h4>Completely not aroused</h4>', '|','|', '|', '|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','|','<h4>Completely aroused</h4>']
+    
+    
+    // define instruction variables//
+
+    //consent//
+
+    var consent = {
+        type: 'image-keyboard-response',
+        choices: ['space'],
+        stimulus: ["logo.jpg"],
+        stimulus_width: window.screen.width*0.75,
+        prompt: "<h2>CONSENT FOR RESEARCH PARTICIPATION</h2><div style='width: 100%; text-align: center'><div style='display: inline-block; margin: 0 auto; padding: 10px 200px 10px 200px; text-align: left'><h4>PURPOSE</h4><p>We are interested in the emotions that people feel when they watch TV shows.</p><h4>STUDY TIME LENGTH</h4><p>This experiment consists of two session, with each about <strong> 45 minutes </strong> to complete. Feel free to take a break when the instruction permits you to do so.</p><h4>COMPENSATION</h4><p> You will be paid <b>$15</b> at the end of the two sessions for watching the video and answering questions.</p><h4>LEGAL INFORMATION</h4><p>By answering the following questions, you are participating in a study being performed by cognitive scientists in the University of Chicago Department of Psychology. If you have questions about this research, please contact Yuan Chang Leong at ycleong@uchicago.edu. You must be at least 18 years old to participate. Your participation in this research is voluntary. You may decline any or all of the following questions. You may decline further participation at any time, without adverse consequences. Your anonymity is assured; the researchers who have requested your participation will not receive any personal information about you.    </p><h3>If you agree with the consent above, press SPACE to continue. </h3><p></p><p></p></div></div>",
+    };
+
+
+    //experiment general introduction//
+
+    var exp_intro = {
+      type: 'html-keyboard-response',
+      choices: ['space'],
+      stimulus: "<h1>Movie Watching Task</h1> <br> <br> <p>We are interested in how affective experience changes over time.</p><p> In this experiment, you will be watching video clips from the TV show <strong> <i>Sherlock</i></strong>.</p> <p> You will be instructed to rate <strong> how each video clip makes you feel</strong>. </p> <p> Press <strong> SPACE </strong> when you are ready to begin.</p> ",
+      data: {
+        subj_id: subj_name,
+        test_part: 'instruct_prompt',
+        completion_code: completion_code
+      }
+    };
+
+    //continuous rating introduction//
+
+    var sliderinstruction = {
+        type: "html-slider-response",
+        stimulus:'<h1>Movie Watching Task</h1> <br> <br> <p> While each video is playing, you will <strong>continuously</strong> rate how aroused or not aroused the video clip makes you feel.</p> <p>You can press <i><span style= "color:blue">left</span></i> or <i><span style= "color:blue">right</span></i> arrow keys to adjust the scale. </p> ',
+        width: 600,
+        height: 400,
+        slider_width: SLIDE_WIDTH,
+        start: SLIDE_START,
+        button_label: 'continue',
+        //trial_duration: 4500,
+        //response_ends_trial: false,
+        //trial_ends_after_video: true,
+        min: SLIDE_MIN,
+        max: SLIDE_MAX,
+        labels: SLIDE_LABELS,
+        step: 1,
+        trial_ends_after_video: true,
+        post_trial_gap: 200,
+        on_load: function(){
+            sliderOnLoad('#jspsych-html-slider-response-response')
+        },
+        on_finish: function(data){
+            sliderOnFinish('#jspsych-html-slider-response-response');
+            //data.ratings = ratings;
+        },
+        on_start: function(trial) {
+            $('#jspsych-html-slider-response-next').hide();
+            $('#jspsych-html-slider-response-next').css("visibility", "hidden");
+
+            const sliderId = '#jspsych-html-slider-response-response';
+            sliderOnStart(sliderId);
+        },
+    };
+
+
+    // can press shift for big changes instruction //
+
+    var shiftinstruction = {
+        type: "html-slider-response",
+        stimulus:'<h1>Movie Watching Task</h1> <br> <br> <p> You can press <i><span style= "color:blue">SHIFT + left</span></i> and <i><span style= "color:blue">SHIFT + right</span></i> arrow keys to make a <i><span style= "color:red">big jump</span></i> on the scale. </p> <p> When you feel comfortable with adjusting the scale, click continue. </p>',
+        width: 600,
+        height: 400,
+        slider_width: SLIDE_WIDTH,
+        start: SLIDE_START,
+        button_label: 'continue',
+        //trial_duration: 4500,
+        //response_ends_trial: false,
+        //trial_ends_after_video: true,
+        min: SLIDE_MIN,
+        max: SLIDE_MAX,
+        labels: SLIDE_LABELS,
+        step: 1,
+        trial_ends_after_video: true,
+        post_trial_gap: 200,
+        on_load: function(){
+            sliderOnLoad('#jspsych-html-slider-response-response')
+        },
+        on_finish: function(data){
+            sliderOnFinish('#jspsych-html-slider-response-response');
+            //data.ratings = ratings;
+        },
+        on_start: function(trial) {
+            $('#jspsych-html-slider-response-next').hide();
+            $('#jspsych-html-slider-response-next').css("visibility", "hidden");
+
+            const sliderId = '#jspsych-html-slider-response-response';
+            sliderOnStart(sliderId);
+        },
+    };
+
+    // KEY DV INSTRUCTION  -- IMPORTANT //   
+
+    var explanation_arousal = {
+        type: 'html-button-response',
+        choices: ['continue'],
+        stimulus: " <h1>Movie Watching Task</h1> <br> <br> <p>You will rate how <strong> aroused </strong> or <strong> not aroused </strong> the video makes you feel at each moment.</p> <p> <strong>AROUSED</strong> refers to when you are feeling: <strong>very mentally or physically alert, activated, and/or energized</strong>.</p> <p><strong>NOT AROUSED</strong> refers to when you are feeling: <strong> very mentally or physically slow, still, and/or de-energized</strong>.</p> <p>Please note that the middle of arousal indicates <strong>some arousal, NOT NEUTRAL</strong>.</p> <br>"
+    };
+    
+
+    // to encourage changes//
+
+    var emphasis_change = {
+        type: 'html-button-response',
+        choices: ['continue'],
+        stimulus: ' <h1>Movie Watching Task</h1> <br> <br> <p> We are very interested in <i><span style= "color:red"><strong>emotion changes</strong></span></i> when you watch the video. </p> <p> <strong><i><span style= "color:red">Every time</span></i> </strong> you find how you feel about the video emotionally changes <strong><i><span style= "color:red"> -- even just a little bit -- </span></i></strong> please change the slider bar to match. </p> <br></ul> '
+    };
+
+
+    //final setup intro//
+
+    var setup_intro = {
+        type: 'html-button-response',
+        choices: ['continue'],
+        stimulus: '<h1>Before You Start</h1> <br> <br> <ul><li><p style = "text-align:left;">Please take a moment to adjust your seating so that you can comfortably watch the monitor and use the keyboard. </li> <li><p style = "text-align:left;">Feel free to dim the lights too for a better experience watching the TV show.</p></li> <li><p style = "text-align:left;">Close the door or do whatever is necessary to <b>minimize disturbance during the experiment</b>.</p> </li> <li><p style = "text-align:left;">Please also take a moment to silent your phone so that you will not be interrupted any messages during the experiment.</p> </li> <br>',
+    };
+
+    //practice instruction//
+
+    var practiceins = {
+        type: 'html-button-response',
+        choices: ['continue'],
+        stimulus: '<p> Now we will do a practice with a short video clip.</i> </p> <p>Get ready!</p> <br>'
+    };
+
+    //practice//
+
+    //var preload = {
+    //    type: 'preload',
+    //    video: [
+    //        'stimuli/valence_practice1.mp4',
+    //        'stimuli/Sherlock1.mp4',
+    //        'stimuli/Sherlock2.mp4',
+    //    ],
+    //}
+
+    var practice = {
+        type: "video-slider-response",
+        sources: [
+        'stimuli/arousal_practice1.mp4'
+        ],
+        width: 900,
+        height: 600,
+        slider_width: SLIDE_WIDTH,
+        slider_start: SLIDE_START,
+        button_label: '',
+        trial_duration: 76000,
+        response_ends_trial: false,
+        trial_ends_after_video: true,
+        min: SLIDE_MIN,
+        max: SLIDE_MAX,
+        labels: SLIDE_LABELS,
+        step: 1,
+        post_trial_gap: 200,
+        on_load: function(){
+            sliderOnLoad('#jspsych-video-slider-response-response')
+        },
+        on_finish: function(data){
+            sliderOnFinish('#jspsych-video-slider-response-response');
+            //data.ratings = ratings;
+            data.sub_type = 'practice';
+        },
+        on_start: function(trial) {
+            $('#jspsych-video-slider-response-next').hide();
+            $('#jspsych-video-slider-response-next').css("visibility", "hidden");
+
+            const sliderId = '#jspsych-video-slider-response-response';
+            sliderOnStart(sliderId);
+        },
+    };
+
+    //final page for instruction//
+
+    var beforeexp = {
+        type: 'html-button-response',
+        choices: ['continue'],
+        stimulus: '<p> Let the experimenter know if you have any questions. If not, press continue to begin the experiment.</p> <br>'
+    };
+    
+
+
+/**********************************************************/
+/************* DEFINE IN_EXPERIMENT FUNCTIONS *************/
+
+
+    // in-experiment instructions
+
+    var sherlock1 = {
+        type: 'html-button-response',
+        choices: ['continue'],
+        stimulus: '<p> Now you will watch the <strong> first 20 minutes </strong> of the <strong><i>Sherlock </i></strong> episode. </p> <p>When you are ready to begin, please click continue.</p> <br>'
+    };
+
+    var sherlock2 = {
+        type: 'html-button-response',
+        choices: ['continue'],
+        stimulus: '<p> Now you will watch the <strong> last 20 minutes </strong> of the <strong><i>Sherlock </i></strong> episode. </p> <p>When you are ready to begin, please click continue.</p><br>'
+    };
+
+    var FNL1 = {
+        type: 'html-button-response',
+        choices: ['continue'],
+        stimulus: '<p> Now you will watch the <strong> first 20 minutes </strong> of the <strong><i>Friday Night Lights</i></strong> episode. </p> <p>When you are ready to begin, please click continue.</p>  <br>'
+    };
+
+    var FNL2 = {
+        type: 'html-button-response',
+        choices: ['continue'],
+        stimulus: '<p> Now you will wwatch the <strong> last 20 minutes </strong> of the <strong><i>Friday Night Lights</i></strong> episode. </p> <p>When you are ready to begin, please click continue.</p>  <br>'
+    };
+
+    var takebreak = {
+        type: 'html-button-response',
+        choices: ['continue'],
+        stimulus: '<p> Great! You are done with the first half of the episode. Please feel free to take a break.  </p><p>Click continue when you are ready to continue with the experiment.</p> <br>'
+    };
+
+
+    // in-experiment video play
+
+    // sherlock first half 
+
+    var playsherlock1 = {
+        type: "video-slider-response",
+        sources: [
+        'stimuli/Sherlock1.mp4'
+        ],
+        width: 900,
+        height: 600,
+        slider_width: SLIDE_WIDTH,
+        slider_start: SLIDE_START,
+        button_label: '',
+        trial_duration: 1385000,
+        response_ends_trial: false,
+        trial_ends_after_video: true,
+        min: SLIDE_MIN,
+        max: SLIDE_MAX,
+        labels: SLIDE_LABELS,
+        step: 1,
+        post_trial_gap: 200,
+        on_load: function(){
+            sliderOnLoad('#jspsych-video-slider-response-response')
+        },
+        on_finish: function(data){
+            sliderOnFinish('#jspsych-video-slider-response-response');
+            //data.ratings = ratings;
+            data.sub_type = 'sherlock1';
+        },
+        on_start: function(trial) {
+            $('#jspsych-video-slider-response-next').hide();
+            $('#jspsych-video-slider-response-next').css("visibility", "hidden");
+
+            const sliderId = '#jspsych-video-slider-response-response';
+            sliderOnStart(sliderId);
+        },
+    };
+
+        // sherlock second half 
+    
+        var playsherlock2 = {
+        type: "video-slider-response",
+        sources: [
+        'stimuli/Sherlock2.mp4'
+        ],
+        width: 900,
+        height: 600,
+        slider_width: SLIDE_WIDTH,
+        slider_start: SLIDE_START,
+        button_label: '',
+        trial_duration: 1512840,
+        response_ends_trial: false,
+        trial_ends_after_video: true,
+        min: SLIDE_MIN,
+        max: SLIDE_MAX,
+        labels: SLIDE_LABELS,
+        step: 1,
+        post_trial_gap: 200,
+        on_load: function(){
+            sliderOnLoad('#jspsych-video-slider-response-response')
+        },
+        on_finish: function(data){
+            sliderOnFinish('#jspsych-video-slider-response-response');
+            data.ratings = ratings;
+        },
+        on_start: function(trial) {
+            $('#jspsych-video-slider-response-next').hide();
+            $('#jspsych-video-slider-response-next').css("visibility", "hidden");
+
+            const sliderId = '#jspsych-video-slider-response-response';
+            sliderOnStart(sliderId);
+        },
+    };
+
+
+    // loading the video //
+
+    function sliderOnLoad(sliderId){
+    // unbindSliderEvents(sliderId);
+
+    //  want the slider to be selected when the page loads
+    $(sliderId).focus();
+
+    // don't want users to be able to click or drag slider
+    $(document).on('click', sliderId, function() {
+    event.preventDefault();
+    });
+
+    $(document).on('mousedown', sliderId, function(event) {
+    event.preventDefault();
+    });
+
+    $(document).on('mousedown', function(event) {
+    event.preventDefault();
+    });
+    };
+
+    // playing the video //
+
+    function recordSliderStartingPoint(last_trial){
+        const data = {
+            response: SLIDE_START,
+            rt: 0,
+            slider_start: SLIDE_START,
+            time_elapsed: jsPsych.totalTime(),
+            expStartTime: jsPsych.startTime(),
+            trial_index: last_trial.trial_index + 1,
+            trial_type: 'video-slider-response-response',
+        }
+    }
+
+    function sliderOnStart(sliderId){
+        
+        const last_trial =  jsPsych.data.getLastTrialData().values()[0];
+        var start_time = new Date().getTime();
+        
+        // record the starting point of the slider before the trial begins!
+        recordSliderStartingPoint(last_trial);
+        
+        $(document).keydown(function(e) {
+            var y = document.getElementById(sliderId.replace('#', ''));
+
+            if ((e.which == 39) && (e.shiftKey)) {
+                const oldVal = parseInt(y.value)
+                var newVal = parseInt(y.value) + (SLIDE_BIG_STEP-1);
+                if ((newVal + 1) >= SLIDE_MAX){
+                 newVal = SLIDE_MAX - 1;
+                }
+                y.value = newVal;
+                console.log(y.value);
+                
+            }
+            if ((e.which == 37) && (e.shiftKey)) {
+                const oldVal = parseInt(y.value)
+                var newVal = parseInt(y.value) - (SLIDE_BIG_STEP-1);
+                if ((newVal - 1) <= SLIDE_MIN){
+                    newVal = SLIDE_MIN + 1;
+                }
+                y.value = newVal;
+                console.log(y.value);
+            }
+        });
+
+        $(document).on('change', sliderId, function() {
+            var d = new Date();
+            const diff =  d.getTime() - start_time;
+
+            const video = document.getElementById('jspsych-video-slider-response-stimulus-video');
+            if (video == null){
+                video_time = 'NA'
+            } else {
+                video_time =  video.currentTime;
+            }
+
+
+            const test = {
+                response: $(this).val(),
+                rt: diff,
+                videotime: video_time,
+                slider_start: SLIDE_START,
+                time_elapsed: jsPsych.totalTime(),
+                expStartTime: jsPsych.startTime(),
+                trial_index: last_trial.trial_index + 1,
+                trial_type: 'video-slider-response-response',
+            }
+        var dataaa = saveDataLine(test);
+        var lineee = anotherline(dataaa);
+        ratings.push(lineee);
+    });
+    };
+
+    function unbindSliderEvents(sliderId){
+        // need to remove the event handler
+        // or it lasts into the next trial
+        $(document).off('change', sliderId);
+        $(document).unbind('keydown');
+    }
+
+    function sliderOnFinish(sliderId){
+        unbindSliderEvents(sliderId);
+    };
+
+    // saving data
+
+    function saveDataLine(data){
+        var data_to_save = [data.response, data.rt, data.videotime, data.trial_index];
+        return data_to_save
+    }
+
+    function anotherline(data_to_save){
+        //var line = data_to_save.join(',')+"\n";
+        var line = data_to_save+"\n";
+        return line
+    }
+
+/**********************************************************/
+/************ DEFINE POST_EXPERIMENT FUNCTIONS ************/
+
+    var close_end = {
+      type: 'html-keyboard-response',
+      choices: ['space'],
+      stimulus: '<p>Please let the experimenter know you are done. </p>',
+      data: {
+        subj_id: subj_name,
+        test_part: 'instruct_prompt'
+      }
+    };
+
+
+/**********************************************************/
+/******************** TIMELINE_PUSH ***********************/
+
+    if (debugMode == false){
+        if (forceFullscreen){
+            timeline.push({
+              type: 'fullscreen',
+              fullscreen_mode: true,
+              button_label: 'Enter Fullscreen',
+              message: '<p>This experiment requires your brower to be in <strong>FULL SCREEN MODE </strong>.  Press the button below to switch to full screen mode.</p>',
+              on_finish: function(data){
+                    viewport_width = get_viewport_size().width;
+                    viewport_height = get_viewport_size().height;
+                    data.screen_width = viewport_width;
+                    data.screen_height = viewport_height;
+                    console.log("ID", subj_name, "W", viewport_width, "H", viewport_height)
+              }
+            });
+        };
+
+        //timeline.push(before_consent);
+        timeline.push(consent);
+        timeline.push(exp_intro);
+    };
+
+    if (show_instructions){
+      timeline.push(explanation_arousal);  
+      timeline.push(sliderinstruction);
+      timeline.push(shiftinstruction);
+      timeline.push(emphasis_change);
+      timeline.push(setup_intro);
+      timeline.push(practiceins);
+      //timeline.push(preload);
+      timeline.push(practice);
+      timeline.push(beforeexp);
+
+
+      // run 1
+
+      timeline.push(sherlock1);
+      timeline.push(playsherlock1);
+      timeline.push(takebreak);
+
+      // run 2
+    
+      timeline.push(sherlock2);
+      timeline.push(playsherlock2);
+
+    }
+
+
+    var sava_data_prompt = [
+        {
+            html: "<p>Great! You have completed all the tasks for today! Now please press <b>continue</br> to the next page.</p>",
+        }
+    ];
+    var response_final= {
+        type: 'survey-html-form',
+        check_blanks: true,
+        button_label: "Continue",
+        on_finish: function(data) {
+            jsPsych.data.get().localSave("csv","data.csv")
+        },
+        timeline: sava_data_prompt
+    };
+
+    timeline.push(response_final);
+
+    timeline.push(close_end);
+
+/******** Brower & Desktop settings ********/
+
+    if (limitToGoogle){
+        var browserInfo = getBrowserInfo();
+        if (browserInfo.browser !== 'Chrome') {
+            Message = "This experiment is only supported by Google Chrome. Please reopen the experiment in Google Chrome."
+            var wrong_browser = {
+                type: 'html-keyboard-response',
+                stimulus: ['<p style="font-size: 26px;">' + Message + '</p>'],
+                choices: jsPsych.NO_KEYS,
+            };
+            jsPsych.init({
+                timeline: [wrong_browser]
+            });
+        }
+    };
+
+    if (limitToDesktop){
+        var mobileCheck = mobileAndTabletCheck();
+        if (mobileCheck){
+            Message = "This experiment is only supported by desktop browsers, and cannot be run on a tablet or a phone. Please reopen the experiment in a desktop browser.  If you can only use a tablet or a phone, and are unable to switch to a desktop browser, please quit the experiment.\."
+            var wrong_browser = {
+                type: 'html-keyboard-response',
+                stimulus: ['<p style="font-size: 26px;">' + Message + '</p>'],
+                choices: jsPsych.NO_KEYS,
+            };
+            jsPsych.init({
+                timeline: [wrong_browser]
+            });
+        } else if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))){
+            Message = "This experiment is only supported by desktop browsers, and cannot be run on a tablet or a phone. Please reopen the experiment in a desktop browser.  If you can only use a tablet or a phone, and are unable to switch to a desktop browser, please quit the experiment."
+            var wrong_browser = {
+                type: 'html-keyboard-response',
+                stimulus: ['<p style="font-size: 26px;">' + Message + '</p>'],
+                choices: jsPsych.NO_KEYS,
+            };
+            jsPsych.init({
+                timeline: [wrong_browser]
+            });
+        } else {
+            var mobile_prompt = {
+              type: 'html-keyboard-response',
+              choices: ['space'],
+              stimulus: '<p>This experiment requires you to use a <strong>desktop browser</strong>. <p>  <p>If you are using a phone or tablet and it has still allowed you to continue, please reopen the experiment in a desktop browser.<p> <p>If you can only use a tablet or a phone, and are unable to switch to a desktop browser, please quit the experiment.</p> <p>If you are on a desktop browser -- GREAT!  Press <strong> SPACE </strong> to continue.</p>'
+            };
+            var start_clock = performance.now();
+            jsPsych.init({
+                timeline: [mobile_prompt].concat(timeline),
+                on_interaction_data_update: function(data) {
+                    viewport_width = get_viewport_size().width;
+                    viewport_height = get_viewport_size().height;
+                    data.subj_id = subj_name;
+                    data.screen_width = viewport_width;
+                    data.screen_height = viewport_height;
+                },
+                on_finish: function() {
+                    var end_clock = performance.now();
+                    var total_time = end_clock - start_clock;
+                }
+            });
+        };
+    } else {
+        var start_clock = performance.now();
+        jsPsych.init({
+            timeline: timeline,
+            on_interaction_data_update: function(data) {
+                viewport_width = get_viewport_size().width;
+                viewport_height = get_viewport_size().height;
+                data.subj_id = subj_name;
+                data.screen_width = viewport_width;
+                data.screen_height = viewport_height;
+            },
+            on_finish: function() {
+                var end_clock = performance.now();
+                var total_time = end_clock - start_clock;
+            }
+        });
+    };
+
+    </script>
+</body>
+</html>
