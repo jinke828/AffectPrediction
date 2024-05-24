@@ -23,4 +23,6 @@ https://github.com/hyssong/NarrativeEngagement/tree/main/code/preprocess
 * Within- and across-dataset arousal prediction:             
 https://github.com/jinke828/AffectPrediction/tree/main/code
 
+please check the guidance for step-by-step instructions to run the code.
+path: ./code/guide.pdf
 
