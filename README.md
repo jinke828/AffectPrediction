@@ -2,7 +2,7 @@
 
 **Jin Ke, Hayoung Song, Zihan Bai, Monica D. Rosenberg & Yuan Chang Leong (2024). Dynamic functional connectivity encodes generalizable representations of emotional arousal across individuals and situational contexts. _bioRxiv_.**  
 
-https://www.biorxiv.org/content/10.1101/2023.11.14.566767v1
+https://www.biorxiv.org/content/10.1101/2023.11.14.566767v2
        
          
 **FMRI datasets used in the study**          
