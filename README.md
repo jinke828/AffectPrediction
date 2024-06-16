@@ -25,6 +25,7 @@ https://github.com/jinke828/AffectPrediction/tree/main/code
 
 * if you are interested in using the arousal network and apply the SVR to your own data to generate moment-to-moment arousal fluctuations:
 https://github.com/jinke828/AffectPrediction/tree/main/arousal_network
+
 run this code: apply_model.ipynb, which will use the arousal network ('arousal_network.mat') and the defined SVR model (svr_model.pkl)
 
 please check the guidance for step-by-step instructions to run these code.
