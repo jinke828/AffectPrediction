@@ -23,10 +23,9 @@ https://github.com/hyssong/NarrativeEngagement/tree/main/code/preprocess
 * Within- and across-dataset arousal prediction:             
 https://github.com/jinke828/AffectPrediction/tree/main/code
 
-* if you are interested in using the arousal network and apply the SVR to your own data to generate moment-to-moment arousal fluctuations:
-https://github.com/jinke828/AffectPrediction/tree/main/arousal_network
-   run this code: apply_model.ipynb, which will use the arousal network ('arousal_network.mat') and the defined SVR model (svr_model.pkl)
+** Trained model **
+* To run the trained model on your own data, please see apply_model.ipynb in https://github.com/jinke828/AffectPrediction/tree/main/arousal_network. This will run the saved SVR model (svr_model.pkl) trained on the overlap arousal network (arousal_network.mat) and the combined Sherlock and Friday Night Lights datasets.
 
-please check the guidance for step-by-step instructions to run these code.
+please check the following guide for step-by-step instructions on how to run the analysis code and trained model
 path: ./code/guide.pdf
 
