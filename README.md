@@ -26,6 +26,6 @@ https://github.com/jinke828/AffectPrediction/tree/main/code
 **Trained model**
 * To run the trained model on your own data, please see apply_model.ipynb in https://github.com/jinke828/AffectPrediction/tree/main/arousal_network. This will run the saved SVR model (svr_model.pkl) trained on the overlap arousal network (arousal_network.mat) and the combined Sherlock and Friday Night Lights datasets.
 
-please check the following guide for step-by-step instructions on how to run the analysis code and trained model
-path: [./code/guide.pdf](https://github.com/jinke828/AffectPrediction/tree/main/code/guide.pdf)
+please refer to the following guide for step-by-step instructions on how to run the analysis code and trained model
+path: [./code/guide.pdf](https://github.com/jinke828/AffectPrediction/blob/main/code/Code_guide.pdf)
 
