@@ -15,7 +15,7 @@ https://www.biorxiv.org/content/10.1101/2023.11.14.566767v2
 **Behavioral data & arousal network**       
 
 * Data openly available after paper being published
-* update on 1.20.2025: the behavioral data is now publicly avaiable here: https://github.com/jinke828/AffectPrediction/tree/main/beh_ratings
+* update on 1.20.2025: the valence and arousal behavioral rating data in all 4 movies (i.e., Sherlock, Friday Night Lights, North by Northwest, and Merlin) are now openly available to the public:  https://github.com/jinke828/AffectPrediction/tree/main/beh_ratings
 * The arousal networks are available here: https://github.com/jinke828/AffectPrediction/tree/main/arousal_network.
 
 **Code**      
