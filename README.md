@@ -10,7 +10,7 @@ https://www.biorxiv.org/content/10.1101/2023.11.14.566767v2
 * Sherlock dataset : http://arks.princeton.edu/ark:/88435/dsp01nz8062179 (Chen et al., 2017; Nat. Neurosci.)  
 * Friday Night Lights dataset : https://openneuro.org/datasets/ds003521/versions/2.2.0 (Chang et al., 2021; Sci. Adv.)  
 * Merlin dataset: https://openneuro.org/datasets/ds001110/versions/00003 (Zadbood et al., 2017; Cereb. Cortex.)  
-* North by Northwest dataset: Collected by our group, access upon request -- please email jinke@uchicago.edu  
+* North by Northwest dataset: Collected by our group, access upon request -- please email jin.ke@yale.edu
 
 **Behavioral data & arousal network**       
 
