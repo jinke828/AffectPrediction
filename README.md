@@ -2,7 +2,7 @@
 
 **Ke, J., Song, H., Bai, Z., Rosenberg, M. D., & Leong, Y. C. (2025). Dynamic brain connectivity predicts emotional arousal during naturalistic movie-watching. PLOS Computational Biology, 21(4), e1012994.**  
 
-[https://www.biorxiv.org/content/10.1101/2023.11.14.566767v2](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1012994](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1012994)
+https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1012994
        
          
 **FMRI datasets used in the study**          
